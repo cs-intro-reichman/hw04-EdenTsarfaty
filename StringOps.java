@@ -106,7 +106,7 @@ public class StringOps {
         for (int i = 0; i < string.length(); i++)
         {
             if (string.charAt(i) != ' ') {
-                if (newword) {
+                if (newword || firstword) {
                     if (firstword) {
                         camelCaseString += toLowerCase(string.charAt(i));
                         firstword = false;
