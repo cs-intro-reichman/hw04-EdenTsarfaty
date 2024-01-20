@@ -51,48 +51,30 @@ public class StringOps {
 
     public static String capVowelsLowRest (String string) {
         String cappedVowelsString = "";
+        String capitalVowels = "aeiou";
         for (int i = 0; i < string.length(); i++)
         {
-            if (isCapital(string.charAt(i))) {
-            switch (string.charAt(i)) {
-                case 'I':
-                    cappedVowelsString += 'I';
-                    break;
-                case 'E':
-                    cappedVowelsString += 'E';
-                    break;
-                case 'O':
-                    cappedVowelsString += 'O';
-                    break;
-                case 'A':
-                    cappedVowelsString += 'A';
-                    break;
-                case 'U':
-                    cappedVowelsString += 'U';
-                    break;
-                default:
-                    cappedVowelsString += toLowerCase(string.charAt(i));
-            }
+            /*
+                #feedback:
+                Switch\case is not a good mechanism to such kind of questions.
+                It should be used when you have multiple cases.
+                Here you have only 2 which is classic to if-else.
+            */
+            char currentChar = string.charAt(i);
+            if (isCapital(currentChar)) {
+                char lowerCase = toLowerCase(currentChar);
+                if (capitalVowels.indexOf(lowerCase) == -1) {
+                    cappedVowelsString += lowerCase;
+                } else {
+                    cappedVowelsString += currentChar;
+                }
             }
             else {
-                switch (string.charAt(i)) {
-                    case 'i':
-                        cappedVowelsString += 'I';
-                        break;
-                    case 'e':
-                        cappedVowelsString += 'E';
-                        break;
-                    case 'o':
-                        cappedVowelsString += 'O';
-                        break;
-                    case 'a':
-                        cappedVowelsString += 'A';
-                        break;
-                    case 'u':
-                        cappedVowelsString += 'U';
-                        break;
-                    default:
-                        cappedVowelsString += string.charAt(i);
+                if(capitalVowels.indexOf(currentChar) >= 0) {
+                    const upperCase = toUpperCase(currentChar);
+                    cappedVowelsString += upperCase;
+                } else {
+                    cappedVowelsString += currentChar;
                 }
             }
         }
@@ -101,42 +83,43 @@ public class StringOps {
 
     public static String camelCase (String string) {
         String camelCaseString = "";
-        boolean newword = false;
-        boolean firstword = true;
+        // #feedback: it's kinda ironic that in camelCase question you did not use camelCased variable names :)
+        boolean newWord = false;
+        boolean firstWord = true;
         for (int i = 0; i < string.length(); i++)
         {
-            if (string.charAt(i) != ' ') {
-                if (newword || firstword) {
-                    if (firstword) {
-                        camelCaseString += toLowerCase(string.charAt(i));
-                        firstword = false;
-                        newword = false;
-                    }
-                    else {
-                        camelCaseString += toUpperCase(string.charAt(i));
-                        newword = false;
-                    }
-                }
-                else {
-                    camelCaseString += toLowerCase(string.charAt(i));
+            // #feedback: try to avoid multiple function calls when the expected value is the same - store it in a variable instead
+            char currentChar = string.charAt(i);
+            if (currentChar != ' ') {
+                // #feedback: why did you wrap these both conditions than seperate their behavior inside?
+                if (firstWord) {
+                    camelCaseString += toLowerCase(currentChar);
+                    firstWord = false;
+                    newWord = false;
+                } else if (newWord) {
+                    camelCaseString += toUpperCase(currentChar);
+                    newWord = false;
+                } else {
+                    camelCaseString += toLowerCase(currentChar);
                 }
             }
             else {
-                newword = true;
+                newWord = true;
             }
         }
         return camelCaseString;
     }
 
     public static int[] allIndexOf (String string, char chr) {
-        int arraysize = 0;
+        // #feedback: camelCase
+        int arraySize = 0;
         for (int i = 0; i < string.length(); i++)
         {
             if (string.charAt(i) == chr) {
-                arraysize++;
+                arraySize++;
             }
         }
-        int indexes[] = new int[arraysize];
+        int indexes[] = new int[arraySize];
         int j = 0;
         for (int i = 0; i < string.length(); i++)
         {
@@ -149,17 +132,31 @@ public class StringOps {
     }
 
     public static boolean isCapital (char chr) {
-        if (chr < 90 && chr > 64) return true;
+        // #feedback: always scope the code in condition with {} - even when there's only one line of code
+        if (chr < 90 && chr > 64) {
+            return true;
+        }
+        
         return false;
     }
 
     public static char toUpperCase (char chr) {
-        if (isCapital(chr)) return chr;
-        else return (char)(chr - 32);
+        // #feedback: always scope the code in condition with {} - even when there's only one line of code
+        if (isCapital(chr)) {
+            return chr;
+        }
+
+        // #feedback: else not required then there is return inside the if
+        return (char)(chr - 32);
     }
 
     public static char toLowerCase (char chr) {
-        if (!isCapital(chr)) return chr;
-        else return (char)(chr + 32);
+        // #feedback: always scope the code in condition with {} - even when there's only one line of code
+        if (!isCapital(chr)) {
+            return chr;
+        }
+
+        // #feedback: else not required then there is return inside the if
+        return (char)(chr + 32);
     }
 }
